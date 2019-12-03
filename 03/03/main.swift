@@ -1,84 +1,64 @@
 import Foundation
 
-guard let fileContents = try? String(contentsOfFile: "input.txt") else {
-    fatalError("Cannot open input file")
-}
-
-var originalInput = fileContents.split(separator: "\n").map { $0.split(separator: ",")}
-//originalInput = "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83".split(separator: "\n").map { $0.split(separator: ",")}
-
 struct Point: Hashable {
     var x: Int
     var y: Int
 }
 
-var coords = Set<Point>()
-var currentPos = Point(x: 0, y: 0)
-var intersections = Set<Point>()
-var wireCoords = Set<Point>()
-
-for wire in originalInput {
-    currentPos = Point(x: 0, y: 0)
-    wireCoords = Set<Point>()
-    for instruction in wire {
+func tracePath<T>(_ p: T) -> Dictionary<Point, Int> where T: StringProtocol {
+    let instructions = p.split(separator: ",")
+    var wire = Dictionary<Point, Int>(minimumCapacity: instructions.count)
+    var currentPos = Point(x: 0, y: 0)
+    var steps = 0
+    for instruction in instructions {
         let direction = instruction.first!
         let amount = Int(instruction[instruction.index(instruction.startIndex, offsetBy: 1)..<instruction.endIndex])!
-        switch direction {
+        var xOffset = 0
+        var yOffset = 0
+        switch (direction)
+        {
         case "R":
-            for _ in 1...amount {
-                currentPos.x += 1
-                
-                if coords.contains(currentPos) && !wireCoords.contains(currentPos) {
-                    intersections.insert(currentPos)
-                } else {
-                    coords.insert(currentPos)
-                    wireCoords.insert(currentPos)
-                }
-            }
+            xOffset = 1;
+            yOffset = 0;
+            break;
         case "D":
-            for _ in 1...amount {
-                currentPos.y += 1
-                if coords.contains(currentPos) && !wireCoords.contains(currentPos) {
-                    intersections.insert(currentPos)
-                } else {
-                    coords.insert(currentPos)
-                    wireCoords.insert(currentPos)
-                }
-            }
+            xOffset = 0;
+            yOffset = -1;
+            break;
         case "L":
-            for _ in 1...amount {
-                currentPos.x -= 1
-                if coords.contains(currentPos) && !wireCoords.contains(currentPos) {
-                    intersections.insert(currentPos)
-                } else {
-                    coords.insert(currentPos)
-                    wireCoords.insert(currentPos)
-                }
-            }
+            xOffset = -1;
+            yOffset = 0;
+            break;
         case "U":
-            for _ in 1...amount {
-                currentPos.y -= 1
-                if coords.contains(currentPos) && !wireCoords.contains(currentPos) {
-                    intersections.insert(currentPos)
-                } else {
-                    coords.insert(currentPos)
-                    wireCoords.insert(currentPos)
-                }
-            }
+            xOffset = 0;
+            yOffset = 1;
+            break;
         default:
-            break
+            break;
+        }
+        for _ in 1...amount {
+            currentPos.x += xOffset
+            currentPos.y += yOffset
+            steps += 1
+            if wire[currentPos] == nil {
+                wire[currentPos] = steps
+            }
         }
     }
+    return wire
 }
 
-/*
-for y in -100...100 {
-    for x in 0...210 {
-        let s = x == 0 && y == 0 ? "o" : coords.contains(Point(x: x, y: y)) ? "x" : "."
-        print(s, terminator: "")
-    }
-    print("")
-}*/
+guard let fileContents = try? String(contentsOfFile: "input.txt") else {
+    fatalError("Cannot open input file")
+}
 
-let m = intersections.map {abs($0.x) + abs($0.y)}.min()!
-print(m)
+let wires = fileContents.split(separator: "\n")
+let wire1 = tracePath(wires[0])
+let wire2 = tracePath(wires[1])
+
+let intersections = wire1.filter{ wire2.keys.contains($0.key)}
+let part1 = intersections.map {abs($0.key.x) + abs($0.key.y)}.min()!
+let part2 = intersections.map {$0.value + wire2[$0.key]!}.min()!
+
+print(part1)
+print(part2)
