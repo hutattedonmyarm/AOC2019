@@ -12,7 +12,7 @@ func tracePath<T>(_ p: T) -> Dictionary<Point, Int> where T: StringProtocol {
     var steps = 0
     for instruction in instructions {
         let direction = instruction.first!
-        let amount = Int(instruction[instruction.index(instruction.startIndex, offsetBy: 1)..<instruction.endIndex])!
+        let amount = Int(instruction[instruction.index(after: instruction.startIndex)...])!
         var xOffset = 0
         var yOffset = 0
         switch (direction)

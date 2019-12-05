@@ -1,6 +1,6 @@
 import Foundation
 
-func checkNumber(_ num: Int, partTwo: Bool = false) -> Bool {
+func checkNumber(_ num: Int) -> (Bool, Bool) {
     let str = String(num)
     var numStreak = 1
     var streaks = [Int]()
@@ -26,13 +26,18 @@ func checkNumber(_ num: Int, partTwo: Bool = false) -> Bool {
         last = current
     }
     streaks.append(numStreak)
-    return (partTwo && streaks.filter {$0 == 2}.count > 0 || !partTwo && hasDouble) && doesNotDecrease
+    return (hasDouble && doesNotDecrease, doesNotDecrease && streaks.filter {$0 == 2}.count > 0)
 }
 
 let lower = 168630
 let upper = 718098
-
 let range = lower...upper
 
-print(range.filter{checkNumber($0)}.count)
-print(range.filter{checkNumber($0, partTwo: true)}.count)
+var t = (0, 0)
+for num in range {
+    let check = checkNumber(num)
+    t.0 += check.0 ? 1 : 0
+    t.1 += check.1 ? 1 : 0
+}
+
+print(t)
