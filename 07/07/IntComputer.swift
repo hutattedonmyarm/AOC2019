@@ -54,7 +54,7 @@ public class IOProgram {
     private func step() {
         let opCode = memory[programCounter]
         let operation = Operation(opCode: opCode)
-        let instruction: Instruction
+        var instruction: Instruction
         
         let parameters = Parameters(opCode: opCode)
         switch operation {
@@ -63,11 +63,7 @@ public class IOProgram {
         case .mul:
             instruction = ArithemticInstruction(operation: *)
         case .inp:
-            guard let inp = input() else {
-                state = .waitingForInput
-                return
-            }
-            instruction = InputInstruction(value: inp)
+            instruction = InputInstruction(value: input())
         case .out:
             instruction = OutputInstruction(output: output)
         case .jtr:
@@ -80,7 +76,6 @@ public class IOProgram {
             instruction = CompareInstruction() { $0 == $1 }
         case .hlt:
             instruction = HaltInstruction()
-            state = .finished
         }
         
         programCounter = instruction.exec(
@@ -88,6 +83,9 @@ public class IOProgram {
           programCounter: programCounter,
           parameters: parameters
         )
+        if let newState = instruction.stateOverwrite {
+            state = newState
+        }
     }
     
     public func run() {
@@ -160,13 +158,15 @@ struct Parameters {
 }
 
 protocol Instruction {
-    func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress
+    var stateOverwrite: ProgramState? { get }
+    mutating func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress
 }
 
 struct ArithemticInstruction: Instruction {
     let operation: (Value, Value) -> Value
+    let stateOverwrite: ProgramState? = nil
     
-    func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
+    mutating func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
         let firstAddendAdress = memory[programCounter + 1]
         let secondAddendAdress = memory[programCounter + 2]
         let resultAdress = memory[programCounter + 3]
@@ -180,9 +180,14 @@ struct ArithemticInstruction: Instruction {
 }
 
 struct InputInstruction: Instruction {
-    let value: Value
+    var value: Value?
+    var stateOverwrite: ProgramState? = nil
     
-    func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
+    mutating func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
+        guard let value = value else {
+            stateOverwrite = .waitingForInput
+            return programCounter
+        }
         let inputAdress = memory[programCounter + 1]
         
         // Always positional
@@ -193,8 +198,9 @@ struct InputInstruction: Instruction {
 
 struct OutputInstruction: Instruction {
     let output: Output
+    let stateOverwrite: ProgramState? = nil
     
-    func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
+    mutating func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
         let valueAdress = memory[programCounter + 1]
         
         output(parameters.first.fetchValue(memory: memory, pointer: valueAdress))
@@ -204,8 +210,9 @@ struct OutputInstruction: Instruction {
 
 struct JumpInstruction: Instruction {
     let condition: (Value) -> Bool
+    let stateOverwrite: ProgramState? = nil
     
-    func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
+    mutating func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
         let valueAdress = memory[programCounter + 1]
         let destinationAdress = memory[programCounter + 2]
         
@@ -218,8 +225,9 @@ struct JumpInstruction: Instruction {
 
 struct CompareInstruction: Instruction {
     let compare: (Value, Value) -> Bool
+    let stateOverwrite: ProgramState? = nil
     
-    func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
+    mutating func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
         let firstValueAdress = memory[programCounter + 1]
         let secondValueAdress = memory[programCounter + 2]
         let resultAdress = memory[programCounter + 3]
@@ -234,7 +242,9 @@ struct CompareInstruction: Instruction {
 }
 
 struct HaltInstruction: Instruction {
-    func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
+    let stateOverwrite: ProgramState? = .finished
+    
+    mutating func exec(memory: inout Memory, programCounter: Adress, parameters: Parameters) -> Adress {
         return programCounter
     }
 }
