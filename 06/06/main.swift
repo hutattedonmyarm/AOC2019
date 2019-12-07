@@ -118,5 +118,4 @@ guard let fileContents = try? String(contentsOfFile: "input.txt") else {
     fatalError("Cannot open input file")
 }
 
-go(input: ro)
 go(input: fileContents)
