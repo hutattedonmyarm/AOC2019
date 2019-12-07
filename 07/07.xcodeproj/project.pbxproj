@@ -10,6 +10,7 @@
 		503718EB239BA103001324AB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503718EA239BA103001324AB /* main.swift */; };
 		503718F2239BA13D001324AB /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 503718F1239BA12B001324AB /* input.txt */; };
 		503718F4239BFDE7001324AB /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503718F3239BFDE7001324AB /* DataStructures.swift */; };
+		503718F6239C1691001324AB /* IntComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503718F5239C1691001324AB /* IntComputer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +31,7 @@
 		503718EA239BA103001324AB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		503718F1239BA12B001324AB /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 		503718F3239BFDE7001324AB /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
+		503718F5239C1691001324AB /* IntComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntComputer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				503718F1239BA12B001324AB /* input.txt */,
 				503718EA239BA103001324AB /* main.swift */,
 				503718F3239BFDE7001324AB /* DataStructures.swift */,
+				503718F5239C1691001324AB /* IntComputer.swift */,
 			);
 			path = 07;
 			sourceTree = "<group>";
@@ -129,6 +132,7 @@
 			files = (
 				503718EB239BA103001324AB /* main.swift in Sources */,
 				503718F4239BFDE7001324AB /* DataStructures.swift in Sources */,
+				503718F6239C1691001324AB /* IntComputer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
