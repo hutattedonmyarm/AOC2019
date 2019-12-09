@@ -9,41 +9,41 @@ public typealias Input = () -> Value?
 var debug = false
 
 public struct RAM {
-  private var memory: Memory
-  public var size: Int {
-    return memory.count
-  }
-
-  public init(withMemory memory: Memory) {
-    self.memory = memory
-  }
-  
-  mutating private func ensureAdress(_ adress: Adress) {
-    while adress >= memory.count {
-      let newMem = Memory(repeating: 0, count: memory.count)
-      memory.append(contentsOf: newMem)
+    private var memory: Memory
+    public var size: Int {
+        return memory.count
     }
-  }
-  
-  mutating public func write(value: Value, at adress: Adress) {
-    ensureAdress(adress)
-    memory[adress] = value
-  }
-
-  mutating public func read(at adress: Adress) -> Value {
-    ensureAdress(adress)
-    return memory[adress]
-  }
-
-  subscript(index: Int) -> Value {
-      mutating get {
-          return read(at: index)
-      }
-      set(newValue) {
-          write(value: newValue, at: index)
-      }
-  }
-
+    
+    public init(withMemory memory: Memory) {
+        self.memory = memory
+    }
+    
+    mutating private func ensureAdress(_ adress: Adress) {
+        while adress >= memory.count {
+            let newMem = Memory(repeating: 0, count: memory.count)
+            memory.append(contentsOf: newMem)
+        }
+    }
+    
+    mutating public func write(value: Value, at adress: Adress) {
+        ensureAdress(adress)
+        memory[adress] = value
+    }
+    
+    mutating public func read(at adress: Adress) -> Value {
+        ensureAdress(adress)
+        return memory[adress]
+    }
+    
+    subscript(index: Int) -> Value {
+        mutating get {
+            return read(at: index)
+        }
+        set(newValue) {
+            write(value: newValue, at: index)
+        }
+    }
+    
 }
 
 public enum ProgramState {
@@ -82,9 +82,9 @@ public class IOProgram {
         self.input = dequeueInput
         self.inputQueue = inputQueue
     }
-
+    
     public func enableDebug() {
-      debug = true
+        debug = true
     }
     
     public static func parse(program: String) -> Memory {
@@ -101,8 +101,8 @@ public class IOProgram {
     
     private func step(decompile: Bool = false) {
         if decompile && programCounter == memory.size {
-          state = .finished
-          return
+            state = .finished
+            return
         }
         let opCode = memory[programCounter]
         guard let operation = Operation(opCode: opCode) else {
@@ -119,7 +119,7 @@ public class IOProgram {
         
         let parameters = Parameters(opCode: opCode, relativeBase: self.relativeBase)
         if debug {
-          print("\(operation) (\(opCode)) at \(programCounter)")
+            print("\(operation) (\(opCode)) at \(programCounter)")
         }
         var codeLine = "\(operation) "
         switch operation {
@@ -142,35 +142,35 @@ public class IOProgram {
             instruction = CompareInstruction() { $0 == $1 }
         case .rlb:
             instruction = AdjustRelativeBaseInstruction() {
-              self.relativeBase += $0
+                self.relativeBase += $0
             }
         case .hlt:
             instruction = HaltInstruction()
         }
         
         if !decompile {
-          programCounter = instruction.exec(
-            memory: &memory,
-            programCounter: programCounter,
-            parameters: parameters
-          )
-          if let newState = instruction.stateOverwrite {
-            state = newState
-          }
+            programCounter = instruction.exec(
+                memory: &memory,
+                programCounter: programCounter,
+                parameters: parameters
+            )
+            if let newState = instruction.stateOverwrite {
+                state = newState
+            }
         } else {
-          codeLine += instruction.getParameterAssembly(
-            memory: &memory,
-            programCounter: programCounter,
-            parameters: parameters
-          )
-          self.assemblyCode.append(codeLine)
-          programCounter += instruction.instructionSize
+            codeLine += instruction.getParameterAssembly(
+                memory: &memory,
+                programCounter: programCounter,
+                parameters: parameters
+            )
+            self.assemblyCode.append(codeLine)
+            programCounter += instruction.instructionSize
         }
     }
     
     public func run() {
         if debug {
-          print("Go")
+            print("Go")
         }
         switch state {
         case .finished, .running:
@@ -182,13 +182,13 @@ public class IOProgram {
             step()
         }
     }
-
+    
     public func decompile() -> String {
-      assemblyCode = [String]()
-      while state != .finished {
-        step(decompile: true)
-      }
-      return assemblyCode.joined(separator: "\n")
+        assemblyCode = [String]()
+        while state != .finished {
+            step(decompile: true)
+        }
+        return assemblyCode.joined(separator: "\n")
     }
 }
 
@@ -228,7 +228,7 @@ enum Mode: Int {
     case position = 0
     case immediate = 1
     case relative = 2
-
+    
     func fetchValue(memory mem: RAM, pointer: Adress, relativeBase: Adress) -> Value {
         var memory = mem
         switch self {
@@ -239,12 +239,12 @@ enum Mode: Int {
         case .relative:
             let val = memory[pointer+relativeBase]
             if debug {
-              print("relative Base: \(relativeBase). pointer: \(pointer). Final adress: \(pointer+relativeBase). Value: \(val)")
+                print("relative Base: \(relativeBase). pointer: \(pointer). Final adress: \(pointer+relativeBase). Value: \(val)")
             }
             return val
         }
     }
-
+    
     func fetchAdress(pointer: Adress, relativeBase: Adress) -> Adress? {
         switch self {
         case .position:
@@ -254,21 +254,21 @@ enum Mode: Int {
         case .relative:
             let val = pointer+relativeBase
             if debug {
-              print("relative Base: \(relativeBase). pointer: \(pointer). Final adress: \(val)")
+                print("relative Base: \(relativeBase). pointer: \(pointer). Final adress: \(val)")
             }
             return val
         }
     }
-
+    
     func getPrefix() -> String {
-      switch self {
-      case .position:
+        switch self {
+        case .position:
             return ""
-      case .immediate:
+        case .immediate:
             return "$"
-      case .relative:
+        case .relative:
             return "%"
-      }
+        }
     }
 }
 
@@ -277,7 +277,7 @@ struct Parameters {
     let second: Mode
     let third: Mode
     let relativeBase: Adress
-
+    
     init(opCode: Int, relativeBase: Adress) {
         self.first = Mode(rawValue: opCode / 100 % 10)!
         self.second = Mode(rawValue: opCode / 1000 % 10)!
@@ -289,7 +289,7 @@ struct Parameters {
 protocol Instruction {
     var stateOverwrite: ProgramState? { get }
     var instructionSize: Adress { get }
-
+    
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress
 }
@@ -300,10 +300,10 @@ struct ArithemticInstruction: Instruction {
     let stateOverwrite: ProgramState? = nil
     
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String {
-      var str = "\(parameters.first.getPrefix())\(memory[programCounter + 1]), "
-      str += "\(parameters.second.getPrefix())\(memory[programCounter + 2]), "
-      str += "\(parameters.third.getPrefix())\(memory[programCounter + 3])"
-      return str
+        var str = "\(parameters.first.getPrefix())\(memory[programCounter + 1]), "
+        str += "\(parameters.second.getPrefix())\(memory[programCounter + 2]), "
+        str += "\(parameters.third.getPrefix())\(memory[programCounter + 3])"
+        return str
     }
     
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
@@ -314,12 +314,12 @@ struct ArithemticInstruction: Instruction {
         let first = parameters.first.fetchValue(memory: memory, pointer: firstAddendAdress, relativeBase: parameters.relativeBase)
         let second = parameters.second.fetchValue(memory: memory, pointer: secondAddendAdress, relativeBase: parameters.relativeBase)
         let resultAdress = parameters.third.fetchAdress(pointer: resultParam, relativeBase: parameters.relativeBase)!
-
+        
         memory[resultAdress] = operation(first, second)
         
         if debug {
-          let res = operation(first, second)
-          print("Arithemtic: \(first), \(second) => \(res)")
+            let res = operation(first, second)
+            print("Arithemtic: \(first), \(second) => \(res)")
         }
         
         return programCounter + instructionSize
@@ -332,7 +332,7 @@ struct InputInstruction: Instruction {
     let instructionSize = 2
     
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String {
-      return "\(parameters.first.getPrefix())\(memory[programCounter + 1])"
+        return "\(parameters.first.getPrefix())\(memory[programCounter + 1])"
     }
     
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
@@ -344,7 +344,7 @@ struct InputInstruction: Instruction {
         let inputAdress = parameters.first.fetchAdress(pointer: inputParam, relativeBase: parameters.relativeBase)!
         memory[inputAdress] = value
         if debug {
-          print("Input: \(value) written to: \(inputAdress)")
+            print("Input: \(value) written to: \(inputAdress)")
         }
         return programCounter + instructionSize
     }
@@ -356,9 +356,9 @@ struct OutputInstruction: Instruction {
     let instructionSize = 2
     
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String {
-      return "\(parameters.first.getPrefix())\(memory[programCounter + 1])"
+        return "\(parameters.first.getPrefix())\(memory[programCounter + 1])"
     }
-
+    
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
         let valueAdress = memory[programCounter + 1]
         
@@ -374,9 +374,9 @@ struct JumpInstruction: Instruction {
     let instructionSize = 3
     
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String {
-      var str = "\(parameters.first.getPrefix())\(memory[programCounter + 1]), "
-      str += "\(parameters.second.getPrefix())\(memory[programCounter + 2])"
-      return str
+        var str = "\(parameters.first.getPrefix())\(memory[programCounter + 1]), "
+        str += "\(parameters.second.getPrefix())\(memory[programCounter + 2])"
+        return str
     }
     
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
@@ -387,10 +387,10 @@ struct JumpInstruction: Instruction {
         let destination = parameters.second.fetchValue(memory: memory, pointer: destinationAdress, relativeBase: parameters.relativeBase)
         
         if debug {
-          let res = condition(value)
-          print("\(res ? "" : "not") jumping to: \(destination)")
+            let res = condition(value)
+            print("\(res ? "" : "not") jumping to: \(destination)")
         }
-
+        
         return condition(value) ? destination : programCounter + instructionSize
     }
 }
@@ -401,10 +401,10 @@ struct CompareInstruction: Instruction {
     let instructionSize = 4
     
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String {
-      var str = "\(parameters.first.getPrefix())\(memory[programCounter + 1]), "
-      str += "\(parameters.second.getPrefix())\(memory[programCounter + 2]), "
-      str += "\(parameters.third.getPrefix())\(memory[programCounter + 3])"
-      return str
+        var str = "\(parameters.first.getPrefix())\(memory[programCounter + 1]), "
+        str += "\(parameters.second.getPrefix())\(memory[programCounter + 2]), "
+        str += "\(parameters.third.getPrefix())\(memory[programCounter + 3])"
+        return str
     }
     
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
@@ -419,11 +419,11 @@ struct CompareInstruction: Instruction {
         let result = compare(firstValue, secondValue) ? 1 : 0
         
         memory[resultAdress] = result
-
+        
         if debug {
-          print("Compare: \(firstValue), \(secondValue) => \(result)")
+            print("Compare: \(firstValue), \(secondValue) => \(result)")
         }
-
+        
         return programCounter + instructionSize
     }
 }
@@ -433,12 +433,12 @@ struct HaltInstruction: Instruction {
     let instructionSize = 1
     
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String {
-      return ""
+        return ""
     }
     
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
         if debug {
-          print(memory)
+            print(memory)
         }
         return programCounter + instructionSize
     }
@@ -450,8 +450,8 @@ struct AdjustRelativeBaseInstruction: Instruction {
     let instructionSize = 2
     
     func getParameterAssembly(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> String {
-      return "\(parameters.first.getPrefix())\(memory[programCounter + 1])"
-      
+        return "\(parameters.first.getPrefix())\(memory[programCounter + 1])"
+        
     }
     
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
