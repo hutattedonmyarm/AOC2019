@@ -6,8 +6,6 @@ public typealias Memory = [Value]
 public typealias Output = (Value) -> Void
 public typealias Input = () -> Value?
 
-var debug = false
-
 public struct RAM {
     private var memory: Memory
     public var size: Int {
@@ -62,6 +60,7 @@ public class IOProgram {
     private var relativeBase: Adress
     public private(set) var state: ProgramState
     private var assemblyCode: [String]
+    private var debug: Bool
     
     private init(program: Memory, output: @escaping Output) {
         self.memory = RAM(withMemory: program)
@@ -70,6 +69,7 @@ public class IOProgram {
         self.state = .initialized
         self.relativeBase = 0
         self.assemblyCode = [String]()
+        self.debug = false
     }
     
     convenience init(program: Memory, input: @escaping Input, output: @escaping Output) {
@@ -146,6 +146,21 @@ public class IOProgram {
             }
         case .hlt:
             instruction = HaltInstruction()
+            if debug {
+                print(memory)
+            }
+        }
+        
+        if decompile || debug {
+            codeLine += instruction.getParameterAssembly(
+                memory: &memory,
+                programCounter: programCounter,
+                parameters: parameters
+            )
+            if decompile {
+                self.assemblyCode.append(codeLine)
+                programCounter += instruction.instructionSize
+            }
         }
         
         if !decompile {
@@ -157,14 +172,6 @@ public class IOProgram {
             if let newState = instruction.stateOverwrite {
                 state = newState
             }
-        } else {
-            codeLine += instruction.getParameterAssembly(
-                memory: &memory,
-                programCounter: programCounter,
-                parameters: parameters
-            )
-            self.assemblyCode.append(codeLine)
-            programCounter += instruction.instructionSize
         }
     }
     
@@ -237,11 +244,7 @@ enum Mode: Int {
         case .immediate:
             return pointer
         case .relative:
-            let val = memory[pointer+relativeBase]
-            if debug {
-                print("relative Base: \(relativeBase). pointer: \(pointer). Final adress: \(pointer+relativeBase). Value: \(val)")
-            }
-            return val
+            return memory[pointer+relativeBase]
         }
     }
     
@@ -252,11 +255,7 @@ enum Mode: Int {
         case .immediate:
             return nil
         case .relative:
-            let val = pointer+relativeBase
-            if debug {
-                print("relative Base: \(relativeBase). pointer: \(pointer). Final adress: \(val)")
-            }
-            return val
+            return pointer+relativeBase
         }
     }
     
@@ -316,12 +315,6 @@ struct ArithemticInstruction: Instruction {
         let resultAdress = parameters.third.fetchAdress(pointer: resultParam, relativeBase: parameters.relativeBase)!
         
         memory[resultAdress] = operation(first, second)
-        
-        if debug {
-            let res = operation(first, second)
-            print("Arithemtic: \(first), \(second) => \(res)")
-        }
-        
         return programCounter + instructionSize
     }
 }
@@ -343,9 +336,6 @@ struct InputInstruction: Instruction {
         let inputParam = memory[programCounter + 1]
         let inputAdress = parameters.first.fetchAdress(pointer: inputParam, relativeBase: parameters.relativeBase)!
         memory[inputAdress] = value
-        if debug {
-            print("Input: \(value) written to: \(inputAdress)")
-        }
         return programCounter + instructionSize
     }
 }
@@ -386,11 +376,6 @@ struct JumpInstruction: Instruction {
         let value = parameters.first.fetchValue(memory: memory, pointer: valueAdress, relativeBase: parameters.relativeBase)
         let destination = parameters.second.fetchValue(memory: memory, pointer: destinationAdress, relativeBase: parameters.relativeBase)
         
-        if debug {
-            let res = condition(value)
-            print("\(res ? "" : "not") jumping to: \(destination)")
-        }
-        
         return condition(value) ? destination : programCounter + instructionSize
     }
 }
@@ -419,11 +404,6 @@ struct CompareInstruction: Instruction {
         let result = compare(firstValue, secondValue) ? 1 : 0
         
         memory[resultAdress] = result
-        
-        if debug {
-            print("Compare: \(firstValue), \(secondValue) => \(result)")
-        }
-        
         return programCounter + instructionSize
     }
 }
@@ -437,9 +417,6 @@ struct HaltInstruction: Instruction {
     }
     
     mutating func exec(memory: inout RAM, programCounter: Adress, parameters: Parameters) -> Adress {
-        if debug {
-            print(memory)
-        }
         return programCounter + instructionSize
     }
 }
