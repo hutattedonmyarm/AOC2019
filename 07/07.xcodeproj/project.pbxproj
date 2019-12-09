@@ -21,6 +21,13 @@
 			remoteGlobalIDString = 50371900239CE01B001324AB;
 			remoteInfo = 08;
 		};
+		506A3369239EB2D8001DA6C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 506A3364239EB2D7001DA6C3 /* 09.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 506A335A239EB2D7001DA6C3;
+			remoteInfo = 09;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +50,7 @@
 		503718F3239BFDE7001324AB /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
 		503718F5239C1691001324AB /* IntComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntComputer.swift; sourceTree = "<group>"; };
 		5037190A239CE01B001324AB /* 08.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 08.xcodeproj; path = ../../08/08.xcodeproj; sourceTree = "<group>"; };
+		506A3364239EB2D7001DA6C3 /* 09.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 09.xcodeproj; path = ../09/09.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +67,7 @@
 		503718DE239BA103001324AB = {
 			isa = PBXGroup;
 			children = (
+				506A3364239EB2D7001DA6C3 /* 09.xcodeproj */,
 				503718E9239BA103001324AB /* 07 */,
 				503718E8239BA103001324AB /* Products */,
 			);
@@ -88,6 +97,14 @@
 			isa = PBXGroup;
 			children = (
 				5037190F239CE01D001324AB /* 08 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		506A3365239EB2D7001DA6C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				506A336A239EB2D8001DA6C3 /* 09 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,6 +160,10 @@
 					ProductGroup = 5037190B239CE01B001324AB /* Products */;
 					ProjectRef = 5037190A239CE01B001324AB /* 08.xcodeproj */;
 				},
+				{
+					ProductGroup = 506A3365239EB2D7001DA6C3 /* Products */;
+					ProjectRef = 506A3364239EB2D7001DA6C3 /* 09.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -157,6 +178,13 @@
 			fileType = "compiled.mach-o.executable";
 			path = 08;
 			remoteRef = 5037190E239CE01D001324AB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		506A336A239EB2D8001DA6C3 /* 09 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = 09;
+			remoteRef = 506A3369239EB2D8001DA6C3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
