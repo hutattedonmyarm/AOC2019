@@ -14,6 +14,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		501BBD5023A2006900CC703A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 501BBD4823A2006700CC703A /* 12.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 501BBD3E23A2006700CC703A;
+			remoteInfo = 12;
+		};
 		5037190E239CE01D001324AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5037190A239CE01B001324AB /* 08.xcodeproj */;
@@ -27,6 +34,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 506A335A239EB2D7001DA6C3;
 			remoteInfo = 09;
+		};
+		506A338D239F5AB0001DA6C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 506A3389239F5AAF001DA6C3 /* 10.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 506A337F239F5AAF001DA6C3;
+			remoteInfo = 10;
+		};
+		506A33AC23A0AFCC001DA6C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 506A33A823A0AFC9001DA6C3 /* 11.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 506A339E23A0AFC9001DA6C3;
+			remoteInfo = 11;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -44,6 +65,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		501BBD4823A2006700CC703A /* 12.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 12.xcodeproj; path = ../12/12.xcodeproj; sourceTree = "<group>"; };
 		503718E7239BA103001324AB /* 07 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = 07; sourceTree = BUILT_PRODUCTS_DIR; };
 		503718EA239BA103001324AB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		503718F1239BA12B001324AB /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
@@ -51,6 +73,8 @@
 		503718F5239C1691001324AB /* IntComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntComputer.swift; sourceTree = "<group>"; };
 		5037190A239CE01B001324AB /* 08.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 08.xcodeproj; path = ../../08/08.xcodeproj; sourceTree = "<group>"; };
 		506A3364239EB2D7001DA6C3 /* 09.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 09.xcodeproj; path = ../09/09.xcodeproj; sourceTree = "<group>"; };
+		506A3389239F5AAF001DA6C3 /* 10.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 10.xcodeproj; path = ../10/10.xcodeproj; sourceTree = "<group>"; };
+		506A33A823A0AFC9001DA6C3 /* 11.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 11.xcodeproj; path = ../11/11.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,9 +88,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		501BBD4923A2006700CC703A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				501BBD5123A2006900CC703A /* 12 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		503718DE239BA103001324AB = {
 			isa = PBXGroup;
 			children = (
+				501BBD4823A2006700CC703A /* 12.xcodeproj */,
+				506A33A823A0AFC9001DA6C3 /* 11.xcodeproj */,
+				506A3389239F5AAF001DA6C3 /* 10.xcodeproj */,
 				506A3364239EB2D7001DA6C3 /* 09.xcodeproj */,
 				503718E9239BA103001324AB /* 07 */,
 				503718E8239BA103001324AB /* Products */,
@@ -105,6 +140,22 @@
 			isa = PBXGroup;
 			children = (
 				506A336A239EB2D8001DA6C3 /* 09 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		506A338A239F5AAF001DA6C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				506A338E239F5AB0001DA6C3 /* 10 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		506A33A923A0AFC9001DA6C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				506A33AD23A0AFCC001DA6C3 /* 11 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,6 +215,18 @@
 					ProductGroup = 506A3365239EB2D7001DA6C3 /* Products */;
 					ProjectRef = 506A3364239EB2D7001DA6C3 /* 09.xcodeproj */;
 				},
+				{
+					ProductGroup = 506A338A239F5AAF001DA6C3 /* Products */;
+					ProjectRef = 506A3389239F5AAF001DA6C3 /* 10.xcodeproj */;
+				},
+				{
+					ProductGroup = 506A33A923A0AFC9001DA6C3 /* Products */;
+					ProjectRef = 506A33A823A0AFC9001DA6C3 /* 11.xcodeproj */;
+				},
+				{
+					ProductGroup = 501BBD4923A2006700CC703A /* Products */;
+					ProjectRef = 501BBD4823A2006700CC703A /* 12.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -173,6 +236,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		501BBD5123A2006900CC703A /* 12 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = 12;
+			remoteRef = 501BBD5023A2006900CC703A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5037190F239CE01D001324AB /* 08 */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -185,6 +255,20 @@
 			fileType = "compiled.mach-o.executable";
 			path = 09;
 			remoteRef = 506A3369239EB2D8001DA6C3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		506A338E239F5AB0001DA6C3 /* 10 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = 10;
+			remoteRef = 506A338D239F5AB0001DA6C3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		506A33AD23A0AFCC001DA6C3 /* 11 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = 11;
+			remoteRef = 506A33AC23A0AFCC001DA6C3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

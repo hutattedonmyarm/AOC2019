@@ -16,6 +16,10 @@ public struct RAM {
         self.memory = memory
     }
     
+    public init() {
+        self.init(withMemory: Memory())
+    }
+    
     mutating private func ensureAdress(_ adress: Adress) {
         while adress >= memory.count {
             let newMem = Memory(repeating: 0, count: memory.count)
@@ -41,7 +45,6 @@ public struct RAM {
             write(value: newValue, at: index)
         }
     }
-    
 }
 
 public enum ProgramState {
@@ -211,23 +214,34 @@ enum Operation: Int {
     case rlb = 9
     case hlt = 99
     
+    static let assemblyRepresentation: [Operation : String] = [
+        .add: "add",
+        .mul: "mul",
+        inp: "inp",
+        .out: "out",
+        .jnz: "jtr",
+        .jz: "jfa",
+        .lt: "let",
+        .eq: "equ",
+        .rlb: "rlb",
+        .hlt: "hlt"
+    ]
+    
     init?(opCode: Int) {
         self.init(rawValue: opCode % 100)
     }
     
-    var description : String {
-        switch self {
-        case .add: return "add"
-        case .mul: return "mul"
-        case .inp: return "inp"
-        case .out: return "out"
-        case .jnz: return "jtr"
-        case .jz: return "jfa"
-        case .lt: return "let"
-        case .eq: return "equ"
-        case .hlt: return "hlt"
-        case .rlb: return "rlb"
+    init?(instruction: String) {
+        let op = Operation.assemblyRepresentation.first {$0.value == instruction}?.key
+        if let o = op {
+            self = o
+        } else {
+            return nil
         }
+    }
+    
+    var description : String {
+        return Operation.assemblyRepresentation[self] ?? "\(self.rawValue)"
     }
 }
 
