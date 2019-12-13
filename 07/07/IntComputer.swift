@@ -86,6 +86,10 @@ public class IOProgram {
         self.inputQueue = inputQueue
     }
     
+    public func setMemory(at: Adress, to: Value) {
+        memory[at] = to
+    }
+    
     public func enableDebug() {
         debug = true
     }

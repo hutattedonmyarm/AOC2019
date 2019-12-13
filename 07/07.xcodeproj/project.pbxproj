@@ -21,6 +21,13 @@
 			remoteGlobalIDString = 501BBD3E23A2006700CC703A;
 			remoteInfo = 12;
 		};
+		501BBD6B23A3510F00CC703A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 501BBD6723A3510B00CC703A /* 13.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 501BBD5D23A3510B00CC703A;
+			remoteInfo = 13;
+		};
 		5037190E239CE01D001324AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5037190A239CE01B001324AB /* 08.xcodeproj */;
@@ -66,6 +73,7 @@
 
 /* Begin PBXFileReference section */
 		501BBD4823A2006700CC703A /* 12.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 12.xcodeproj; path = ../12/12.xcodeproj; sourceTree = "<group>"; };
+		501BBD6723A3510B00CC703A /* 13.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = 13.xcodeproj; path = ../13/13.xcodeproj; sourceTree = "<group>"; };
 		503718E7239BA103001324AB /* 07 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = 07; sourceTree = BUILT_PRODUCTS_DIR; };
 		503718EA239BA103001324AB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		503718F1239BA12B001324AB /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
@@ -96,9 +104,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		501BBD6823A3510B00CC703A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				501BBD6C23A3510F00CC703A /* 13 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		503718DE239BA103001324AB = {
 			isa = PBXGroup;
 			children = (
+				501BBD6723A3510B00CC703A /* 13.xcodeproj */,
 				501BBD4823A2006700CC703A /* 12.xcodeproj */,
 				506A33A823A0AFC9001DA6C3 /* 11.xcodeproj */,
 				506A3389239F5AAF001DA6C3 /* 10.xcodeproj */,
@@ -227,6 +244,10 @@
 					ProductGroup = 501BBD4923A2006700CC703A /* Products */;
 					ProjectRef = 501BBD4823A2006700CC703A /* 12.xcodeproj */;
 				},
+				{
+					ProductGroup = 501BBD6823A3510B00CC703A /* Products */;
+					ProjectRef = 501BBD6723A3510B00CC703A /* 13.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -241,6 +262,13 @@
 			fileType = "compiled.mach-o.executable";
 			path = 12;
 			remoteRef = 501BBD5023A2006900CC703A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		501BBD6C23A3510F00CC703A /* 13 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = 13;
+			remoteRef = 501BBD6B23A3510F00CC703A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5037190F239CE01D001324AB /* 08 */ = {

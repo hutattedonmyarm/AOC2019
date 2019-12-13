@@ -118,3 +118,8 @@ public struct Queue<T>: CustomStringConvertible {
         return list.isEmpty
     }
 }
+
+public struct Point: Hashable, Equatable {
+    let x: Int
+    let y: Int
+}
