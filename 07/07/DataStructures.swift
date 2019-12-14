@@ -123,3 +123,4 @@ public struct Point: Hashable, Equatable {
     let x: Int
     let y: Int
 }
+

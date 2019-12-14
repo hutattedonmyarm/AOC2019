@@ -5,20 +5,24 @@ guard let fileContents = try? String(contentsOfFile: "input.txt") else {
 }
 
 func draw(tiles: [Point: Tile], score: Int) {
-    let maxX = tiles.max { $0.key.x < $1.key.x }!.key.x
-    let maxY = tiles.max { $0.key.y < $1.key.y }!.key.y
+    let width = tiles.max { $0.key.x < $1.key.x }!.key.x
+    let height = tiles.max { $0.key.y < $1.key.y }!.key.y
     
-    print("Score: \(score) - \(maxY)")
-    for y in 0...maxY {
-        var line = ""
-        for x in 0...maxX {
-            let point = Point(x: x, y: y)
-            let tile = tiles[point] ?? .empty
-            line += tile.description
-        }
-        print(line)
+    let scoreFormat = String(format: "%05d", score)
+    var scoreLabel = " Score: \(scoreFormat) "
+    var scoreWidth = scoreLabel.count
+    if (1+width - scoreWidth) % 2 != 0 {
+        scoreLabel.append(" ")
+        scoreWidth += 1
     }
-    usleep(50000)
+    let chars = [Character](repeating: "-", count: (1+width - scoreWidth) / 2)
+    let filler = String(chars)
+    
+    print("\(filler)\(scoreLabel)\(filler)")
+    for row in 0...height {
+        print((0...width).map { (tiles[Point(x: $0, y: row)] ?? .empty).description }.joined())
+    }
+    usleep(40000)
 }
 
 enum Tile: Int, Hashable, CustomStringConvertible {
@@ -47,29 +51,10 @@ enum Tile: Int, Hashable, CustomStringConvertible {
 var posX: Int? = nil
 var posY: Int? = nil
 var tiles = [Point: Tile]()
-var score = -1
-var inputQueue = Queue(initialValue: -1)
-let ips = [0, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-for i in ips {
-    inputQueue.enqueue(i)
-}
-
-/*
-
-If the joystick is in the neutral position, provide 0.
-If the joystick is tilted to the left, provide -1.
-If the joystick is tilted to the right, provide 1.
-The arcade cabinet also has a segment display capable of showing a single number that represents the player's current score. When three output instructions specify X=-1, Y=0, the third output instruction is not a tile; the value instead specifies the new score to show in the segment display. For example, a sequence of output values like -1,0,12345 would show 12345 as the player's current score.
-*/
+var score = 0
 
 let input: Input = {
     draw(tiles: tiles, score: score)
-    //let str = readLine()!
-    //let inp = Int(str)
-    //return inp
-    
-    //return inputQueue.dequeue()
-    
     let ballPos = tiles.first { $1 == .ball }!
     let paddlePos = tiles.first { $1 == .horizontal }!
     return ballPos.key.x == paddlePos.key.x ? 0 : ballPos.key.x < paddlePos.key.x ? -1 : 1
